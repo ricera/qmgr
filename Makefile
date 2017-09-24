@@ -24,5 +24,8 @@ test: qmgr_test
 coverage: test
 	llvm-cov50 gcov -b qmgr_test.cpp
 
+cleanall: clean cleandepend
+	rm -f *.gcda *.gcno
+
 .include <bsd.prog.mk>
 

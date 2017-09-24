@@ -14,9 +14,10 @@ enum ie_qmgr_alloc_type {
 struct ie_qmgr {
 	uint32_t size;
 	uint32_t unallocated;
+	uint32_t max_alloc_size;
 };
 
-int 		ie_qmgr_init(struct ie_qmgr *qmgr, uint32_t size);
+int 		ie_qmgr_init(struct ie_qmgr *qmgr, uint32_t size, uint32_t max_alloc_size);
 uint32_t	ie_qmgr_get_size(struct ie_qmgr *qmgr);
 uint32_t	ie_qmgr_get_unallocated(struct ie_qmgr *qmgr);
 int		ie_qmgr_allocate(struct ie_qmgr *qmgr, uint32_t num);

@@ -14,7 +14,7 @@ CPPUTEST_LIB = /usr/local/lib
 CFLAGS += -I$(CPPUTEST_INCLUDE)
 # Include code coverage info for profiling
 CFLAGS += -instr-profile --coverage -O0
-# Include memory leak detection (for malloc)
+## Include memory leak detection (for malloc)
 # CFLAGS += -include $(CPPUTEST_INCLUDE)/CppUTest/MemoryLeakDetectorMallocMacros.h
 LDADD += -L$(CPPUTEST_LIB) -lCppUTest
 

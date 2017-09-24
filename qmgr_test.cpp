@@ -15,7 +15,7 @@ TEST_GROUP(qmgr_use)
 
 	void setup()
 	{
-		ie_qmgr_init(&qmgr1, 1536);
+		ie_qmgr_init(&qmgr1, 1536, 128);
 	}
 
 	void teardown()
@@ -79,11 +79,27 @@ TEST(qmgr_use, AllocateTooManySingleQueues)
 	CHECK(error > 0);
 }
 
+TEST(qmgr_init, TestAllocationMaxSize)
+{
+	int error = -1;
+	uint32_t uaq = 0;
+
+	ie_qmgr_init(&qmgr1, 1536, 64);
+	error = ie_qmgr_allocate(&qmgr1, 64);
+	LONGS_EQUAL(error, 0);
+
+	error = ie_qmgr_allocate(&qmgr1, 128);
+	CHECK(error > 0);
+
+	// Make sure number of unallocated queues is unaffected
+	UNSIGNED_LONGS_EQUAL(ie_qmgr_get_unallocated(&qmgr1), 1472); 
+}
+
 TEST(qmgr_init, SuccessfulInitValidSize)
 {
 	int error = -1;
 
-	error = ie_qmgr_init(&qmgr1, 1);
+	error = ie_qmgr_init(&qmgr1, 1, 128);
 
 	LONGS_EQUAL(error, 0);
 }
@@ -93,7 +109,7 @@ TEST(qmgr_init, FailInitInvalidSize)
 	/* Negative errors should be invalid */
 	int error = -1;
 
-	error = ie_qmgr_init(&qmgr1, 0);
+	error = ie_qmgr_init(&qmgr1, 0, 128);
 
 	LONGS_EQUAL(error, EINVAL);
 }
@@ -102,7 +118,7 @@ TEST(qmgr_init, CorrectSizeAfterInit)
 {
 	uint32_t size = 0;
 
-	ie_qmgr_init(&qmgr1, 1536);
+	ie_qmgr_init(&qmgr1, 1536, 128);
 	size = ie_qmgr_get_size(&qmgr1);
 
 	UNSIGNED_LONGS_EQUAL(size, 1536);

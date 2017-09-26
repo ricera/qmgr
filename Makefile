@@ -22,10 +22,10 @@ test: qmgr_test
 	@./qmgr_test
 
 coverage: test
-	llvm-cov50 gcov -b qmgr_test.cpp
+	llvm-cov50 gcov qmgr_test.cpp
 
 cleanall: clean cleandepend
-	rm -f *.gcda *.gcno
+	rm -f *.gcda *.gcno *.gcov
 
 .include <bsd.prog.mk>
 

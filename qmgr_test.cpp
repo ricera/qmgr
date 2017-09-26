@@ -79,6 +79,29 @@ TEST(qmgr_use, AllocateTooManySingleQueues)
 	CHECK(error > 0);
 }
 
+static void
+qmgr_test_allocate_and_check(struct ie_qmgr *qmgr, int num, int unallocated_after)
+{
+	int error = -1;
+
+	error = ie_qmgr_allocate(qmgr, num);
+	LONGS_EQUAL(error, 0);
+	LONGS_EQUAL(ie_qmgr_get_unallocated(qmgr), unallocated_after);
+}
+
+TEST(qmgr_use, AllocateVariousSizes)
+{
+	/* Assumes qmgr1 max alloc size is 128 */
+	qmgr_test_allocate_and_check(&qmgr1, 1, 1535);
+	qmgr_test_allocate_and_check(&qmgr1, 2, 1533);
+	qmgr_test_allocate_and_check(&qmgr1, 4, 1529);
+	qmgr_test_allocate_and_check(&qmgr1, 8, 1521);
+	qmgr_test_allocate_and_check(&qmgr1, 16, 1505);
+	qmgr_test_allocate_and_check(&qmgr1, 32, 1473);
+	qmgr_test_allocate_and_check(&qmgr1, 64, 1409);
+	qmgr_test_allocate_and_check(&qmgr1, 128, 1281);
+}
+
 TEST(qmgr_init, TestAllocationMaxSize)
 {
 	int error = -1;
